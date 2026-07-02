@@ -384,23 +384,25 @@
   }
   .parceiros-intro p{ color: var(--text-muted); font-size: 16px; }
   .parceiros-grid{
-    display:grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    margin: 0 auto;
   }
   .parceiro-slot{
-    aspect-ratio: 3 / 2;
+    aspect-ratio: auto;
     border: 1.5px dashed var(--border);
     border-radius: var(--radius);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--surface);
+    padding: 40px 48px;
+  }
+  .parceiro-slot img{
+    max-width: 100%;
+    height: auto;
+    display: block;
   }
 
   /* ============================================================
@@ -824,10 +826,9 @@
       </div>
       <!-- Placeholder: substituir por logos reais de parceiros quando formalizados publicamente -->
       <div class="parceiros-grid">
-        <div class="parceiro-slot">Parceiro</div>
-        <div class="parceiro-slot">Parceiro</div>
-        <div class="parceiro-slot">Parceiro</div>
-        <div class="parceiro-slot">Parceiro</div>
+        <div class="parceiro-slot">
+          <img src="logo-technium.png" alt="Technium">
+        </div>
       </div>
     </div>
   </section>

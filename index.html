@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mesalab — inteligência artificial aplicada ao trabalho</title>
+<meta name="description" content="A mesalab conecta empresas médias e grandes a uma rede curada de especialistas em inteligência artificial, repensando estruturas, processos e formas de trabalho para gerar resultado real e sustentável.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     TOKENS — MESALAB
+     Cores extraídas do logotipo oficial: navy #0E2C50 / azul #4476BF
+     ============================================================ */
+  :root{
+    --navy: #0E2C50;
+    --navy-soft: #1C4270;
+    --blue: #4476BF;
+    --blue-soft: #7EA1D6;
+    --bg: #F7F8FA;
+    --bg-alt: #EDF1F7;
+    --surface: #FFFFFF;
+    --text: #0E2C50;
+    --text-muted: #5B6B7F;
+    --border: #DCE3EC;
+
+    --font-display: 'Sora', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+
+    --radius: 4px;
+    --max-width: 1180px;
+    --section-pad: 128px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+
+  body{
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img{ max-width:100%; display:block; }
+
+  a{ color: inherit; text-decoration: none; }
+
+  .wrap{
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  h1,h2,h3,h4{
+    font-family: var(--font-display);
+    color: var(--navy);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  /* ============================================================
+     SIGNATURE ELEMENT — "borda da mesa"
+     Linha dupla (fina + grossa deslocada) que evoca a beirada
+     de uma mesa vista de lado. Reaparece como divisor estrutural
+     ao longo de toda a página.
+     ============================================================ */
+  .table-edge{
+    position: relative;
+    height: 10px;
+    margin: 0 auto;
+  }
+  .table-edge::before,
+  .table-edge::after{
+    content:"";
+    position:absolute;
+    left:0; right:0;
+    height:2px;
+  }
+  .table-edge::before{
+    top:0;
+    background: var(--navy);
+  }
+  .table-edge::after{
+    top:6px;
+    background: var(--blue);
+    opacity:.55;
+  }
+  .table-edge--sm{ max-width:120px; }
+  .table-edge--center{ margin: 0 auto; }
+
+  /* Eyebrow / rótulo de laboratório */
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--blue);
+    margin-bottom: 18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:20px; height:1px;
+    background: var(--blue);
+    display:inline-block;
+  }
+
+  .section{ padding: var(--section-pad) 0; }
+  .section-alt{ background: var(--bg-alt); }
+
+  .section-head{
+    max-width: 640px;
+    margin-bottom: 64px;
+  }
+  .section-head h2{
+    font-size: clamp(28px, 3.4vw, 40px);
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .section-head p{
+    color: var(--text-muted);
+    font-size: 17px;
+    max-width: 560px;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family: var(--font-body);
+    font-weight:600;
+    font-size:15px;
+    padding: 14px 28px;
+    border-radius: var(--radius);
+    border: 1.5px solid transparent;
+    cursor:pointer;
+    transition: transform .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .btn:focus-visible{ outline: 2px solid var(--blue); outline-offset: 3px; }
+
+  .btn-primary{
+    background: var(--navy);
+    color: #fff;
+  }
+  .btn-primary:hover{ background: var(--navy-soft); transform: translateY(-1px); }
+
+  .btn-outline{
+    background: transparent;
+    border-color: var(--navy);
+    color: var(--navy);
+  }
+  .btn-outline:hover{ background: var(--navy); color:#fff; }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  header{
+    position: sticky;
+    top:0;
+    z-index: 100;
+    background: rgba(247,248,250,0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .25s ease, box-shadow .25s ease;
+  }
+  header.scrolled{
+    border-color: var(--border);
+    box-shadow: 0 2px 24px rgba(14,44,80,0.05);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 20px 0;
+  }
+  .logo{
+    display: inline-flex;
+    align-items: center;
+  }
+  .logo img{ height: 36px; width: auto; display: block; }
+  .logo .l1{ color: var(--navy); }
+  .logo .l2{ color: var(--blue); }
+
+  .nav-links{
+    display:flex;
+    gap: 36px;
+    list-style:none;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .nav-links a{
+    color: var(--text-muted);
+    transition: color .2s ease;
+    position: relative;
+  }
+  .nav-links a:hover{ color: var(--navy); }
+
+  .nav-cta{ display:flex; align-items:center; gap:24px; }
+
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding: 8px;
+  }
+  .nav-toggle span{
+    width:22px; height:2px; background: var(--navy); display:block;
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{
+    padding: 96px 0 80px;
+    text-align:center;
+  }
+  .hero h1{
+    font-size: clamp(34px, 5.6vw, 60px);
+    font-weight: 800;
+    max-width: 900px;
+    margin: 0 auto 28px;
+  }
+  .hero h1 .accent{ color: var(--blue); }
+  .hero p.lead{
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 620px;
+    margin: 0 auto 40px;
+  }
+  .hero-actions{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom: 72px;
+  }
+  .hero .table-edge{ max-width: 320px; }
+
+  /* ============================================================
+     SOBRE
+     ============================================================ */
+  .sobre-grid{
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
+    align-items:start;
+  }
+  .sobre-narrative p{
+    font-size: 17px;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+  .sobre-narrative p:first-child{
+    font-size: 20px;
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  .mv-cards{ display:flex; flex-direction:column; gap:28px; }
+  .mv-card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue);
+    padding: 28px 30px;
+    border-radius: var(--radius);
+  }
+  .mv-card h3{
+    font-size: 13px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+  .mv-card p{
+    font-size: 15.5px;
+    color: var(--navy);
+    line-height:1.6;
+  }
+
+  /* ============================================================
+     COMO TRABALHAMOS — método (ordem importa: antes/durante/depois)
+     ============================================================ */
+  .metodo-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--border);
+  }
+  .metodo-card{
+    padding: 36px 32px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .metodo-card:last-child{ border-right:none; }
+  .metodo-num{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--blue);
+    margin-bottom: 20px;
+  }
+  .metodo-card h3{
+    font-size: 19px;
+    margin-bottom: 12px;
+  }
+  .metodo-card p{
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+
+  /* ============================================================
+     SERVIÇOS — funil Vetor -> Consultoria
+     ============================================================ */
+  .servicos-flow{
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 28px;
+    align-items:center;
+  }
+  .servico-card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 36px;
+    height:100%;
+  }
+  .servico-tag{
+    display:inline-block;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+  .tag-entrada{ background: var(--bg-alt); color: var(--blue); }
+  .tag-core{ background: var(--navy); color: #fff; }
+  .servico-card h3{ font-size: 24px; margin-bottom: 14px; }
+  .servico-card p{ color: var(--text-muted); font-size: 15.5px; margin-bottom: 22px; }
+  .servico-card ul{ list-style:none; }
+  .servico-card li{
+    font-size: 14.5px;
+    color: var(--navy);
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .servico-card li::before{
+    content:"—";
+    position:absolute; left:0;
+    color: var(--blue);
+  }
+  .servico-arrow{
+    font-size: 28px;
+    color: var(--blue);
+    font-family: var(--font-mono);
+  }
+  .servicos-cta{ text-align:center; margin-top: 48px; }
+
+  /* ============================================================
+     PARCEIROS
+     ============================================================ */
+  .parceiros-intro{
+    max-width: 680px;
+    margin-bottom: 48px;
+  }
+  .parceiros-intro p{ color: var(--text-muted); font-size: 16px; }
+  .parceiros-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .parceiro-slot{
+    aspect-ratio: 3 / 2;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--surface);
+  }
+
+  /* ============================================================
+     TIME
+     ============================================================ */
+  .time-card{
+    display:grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    align-items:center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 48px;
+  }
+  .time-photo{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background: var(--bg-alt);
+    border: 2px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align:center;
+    padding: 10px;
+    overflow:hidden;
+  }
+  .time-photo img{ width:100%; height:100%; object-fit:cover; }
+  .time-info .eyebrow{ margin-bottom: 10px; }
+  .time-info h3{ font-size: 24px; margin-bottom: 4px; }
+  .time-role{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--blue);
+    margin-bottom: 18px;
+    display:block;
+  }
+  .time-info p{ color: var(--text-muted); font-size: 15.5px; }
+
+  /* ============================================================
+     CONTATO
+     ============================================================ */
+  .contato-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+  .contato-info h2{
+    font-size: clamp(28px, 3.4vw, 38px);
+    margin-bottom: 20px;
+  }
+  .contato-info p.lead{ color: var(--text-muted); font-size: 16.5px; margin-bottom: 36px; }
+  .contato-detail{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    font-size: 15px;
+  }
+  .contato-detail div{ display:flex; gap:12px; }
+  .contato-detail span.label{
+    font-family: var(--font-mono);
+    color: var(--blue);
+    min-width: 90px;
+    font-size: 12.5px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    padding-top:2px;
+  }
+  .contato-detail a:hover{ color: var(--blue); }
+
+  form{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px;
+    display:flex;
+    flex-direction:column;
+    gap: 20px;
+  }
+  .form-row{ display:flex; flex-direction:column; gap:8px; }
+  .form-row label{
+    font-size: 13px;
+    font-weight:600;
+    color: var(--navy);
+  }
+  .form-row input,
+  .form-row textarea{
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text);
+    resize: vertical;
+  }
+  .form-row input:focus,
+  .form-row textarea:focus{
+    outline:none;
+    border-color: var(--blue);
+    background: #fff;
+  }
+  form .btn-primary{
+    justify-content:center;
+    margin-top: 6px;
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{
+    background: var(--navy);
+    color: rgba(255,255,255,.75);
+    padding: 56px 0 32px;
+  }
+  .footer-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap: 32px;
+    padding-bottom: 40px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+  }
+  .footer-top .logo .l1{ color:#fff; }
+  .footer-top .logo .l2{ color: var(--blue-soft); }
+  footer .nav-links{ flex-wrap:wrap; }
+  footer .nav-links a{ color: rgba(255,255,255,.7); }
+  footer .nav-links a:hover{ color:#fff; }
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    font-size: 13px;
+    color: rgba(255,255,255,.5);
+  }
+  .footer-social{ display:flex; gap:18px; }
+
+  /* ============================================================
+     SCROLL REVEAL
+     ============================================================ */
+  .reveal{
+    opacity:0;
+    transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 900px){
+    :root{ --section-pad: 88px; }
+    .sobre-grid,
+    .servicos-flow,
+    .contato-grid{ grid-template-columns: 1fr; }
+    .servicos-flow{ gap: 0; }
+    .servico-arrow{ transform: rotate(90deg); margin: 8px auto; }
+    .metodo-grid{ grid-template-columns: 1fr; }
+    .metodo-card{ border-right:none; }
+    .parceiros-grid{ grid-template-columns: repeat(2, 1fr); }
+    .time-card{ grid-template-columns: 1fr; text-align:center; }
+    .time-photo{ width: 160px; margin: 0 auto; }
+    .contato-detail div{ justify-content:center; }
+  }
+
+  @media (max-width: 760px){
+    .nav-links, .nav-cta .btn-outline{ display:none; }
+    .nav-toggle{ display:flex; }
+    .wrap{ padding: 0 20px; }
+    form{ padding: 28px; }
+    .time-card{ padding: 32px; }
+  }
+
+  /* mobile nav drawer */
+  .mobile-drawer{
+    display:none;
+    position: fixed;
+    inset: 0;
+    background: var(--navy);
+    z-index: 200;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap: 32px;
+  }
+  .mobile-drawer.open{ display:flex; }
+  .mobile-drawer a{
+    color:#fff;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight:600;
+  }
+  .mobile-drawer .close{
+    position:absolute;
+    top:24px; right:24px;
+    background:none; border:none;
+    color:#fff; font-size:28px; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header id="siteHeader">
+  <div class="wrap nav">
+    <a href="#top" class="logo"><img src="LOGO_NORMAL sitema.png" alt="mesalab"></a>
+
+    <ul class="nav-links">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#metodo">Como trabalhamos</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#parceiros">Parceiros</a></li>
+      <li><a href="#time">Time</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <a href="#contato" class="btn btn-outline">Agendar conversa</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <button class="close" id="closeDrawer" aria-label="Fechar menu">&times;</button>
+  <a href="#sobre">Sobre</a>
+  <a href="#metodo">Como trabalhamos</a>
+  <a href="#servicos">Serviços</a>
+  <a href="#parceiros">Parceiros</a>
+  <a href="#time">Time</a>
+  <a href="#contato">Contato</a>
+</div>
+
+<main id="top">
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero wrap">
+    <h1>O ser humano é a <span class="accent">ferramenta</span> mais avançada já criada.</h1>
+    <p class="lead">Na mesalab, ele se encontra com a inteligência artificial para multiplicar o que já faz de melhor — e repensar como grandes empresas trabalham.</p>
+    <div class="hero-actions">
+      <a href="#contato" class="btn btn-primary">Agendar conversa</a>
+      <a href="#servicos" class="btn btn-outline">Conhecer os serviços</a>
+    </div>
+    <div class="table-edge table-edge--center"></div>
+  </section>
+
+  <!-- ============================================================
+       SOBRE
+       ============================================================ -->
+  <section class="section" id="sobre">
+    <div class="wrap reveal">
+      <div class="eyebrow">a mesa</div>
+      <div class="sobre-grid">
+        <div class="sobre-narrative">
+          <p>Toda decisão importante já nasceu em uma mesa.</p>
+          <p>É onde se reúnem pessoas diferentes para construir algo juntas — onde se decide, se negocia, se desenha o próximo passo. A mesalab nasceu desse princípio e, hoje, chega a esse encontro com um novo participante: a inteligência artificial.</p>
+          <p>Não vendemos ferramentas prontas. Ajudamos empresas médias e grandes a repensar estruturas, processos e formas de trabalho — usando IA como catalisador de um resultado que se sustenta no tempo, não como um projeto pontual de automação.</p>
+        </div>
+        <div class="mv-cards">
+          <div class="mv-card">
+            <h3>Missão</h3>
+            <p>Potencializar o resultado do trabalho das pessoas, integrando inteligência artificial às estruturas, processos e formas de pensar das empresas — de maneira prática, sistêmica e sustentável.</p>
+          </div>
+          <div class="mv-card">
+            <h3>Visão</h3>
+            <p>Ser a mesa de referência onde empresas repensam como trabalham — reconhecida como o hub que transforma inteligência artificial em resultado real e duradouro para organizações e para as pessoas dentro delas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMO TRABALHAMOS
+       ============================================================ -->
+  <section class="section section-alt" id="metodo">
+    <div class="wrap reveal">
+      <div class="section-head">
+        <div class="eyebrow">o método</div>
+        <h2>Antes, durante e depois.</h2>
+        <p>Três momentos que se sucedem — cada um constrói a base do próximo.</p>
+      </div>
+      <div class="metodo-grid">
+        <div class="metodo-card">
+          <div class="metodo-num">01</div>
+          <h3>Diagnóstico sob medida</h3>
+          <p>Entendimento profundo da estrutura, dos processos e das pessoas antes de qualquer recomendação. Nada de solução genérica aplicada de fora para dentro.</p>
+        </div>
+        <div class="metodo-card">
+          <div class="metodo-num">02</div>
+          <h3>Implementação com propósito</h3>
+          <p>Aplicação de inteligência artificial desenhada para a realidade específica de cada cliente, integrada à forma como as pessoas de fato trabalham.</p>
+        </div>
+        <div class="metodo-card">
+          <div class="metodo-num">03</div>
+          <h3>Resultado sustentável</h3>
+          <p>O ganho permanece depois da entrega, porque a mudança é estrutural — não uma dependência contínua de ferramenta ou fornecedor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SERVIÇOS
+       ============================================================ -->
+  <section class="section" id="servicos">
+    <div class="wrap reveal">
+      <div class="section-head">
+        <div class="eyebrow">produtos</div>
+        <h2>Da primeira conversa à mudança estrutural.</h2>
+        <p>Dois passos, um caminho. O segundo é a evolução natural do primeiro.</p>
+      </div>
+
+      <div class="servicos-flow">
+        <div class="servico-card">
+          <span class="servico-tag tag-entrada">Ponto de entrada</span>
+          <h3>Vetor</h3>
+          <p>Um diagnóstico objetivo que mapeia oportunidades reais de aplicação de inteligência artificial na estrutura da sua empresa — sem compromisso de continuidade.</p>
+          <ul>
+            <li>Entrega concreta e independente</li>
+            <li>Baixo atrito para começar</li>
+            <li>Base real para decidir os próximos passos</li>
+          </ul>
+        </div>
+
+        <div class="servico-arrow" aria-hidden="true">→</div>
+
+        <div class="servico-card">
+          <span class="servico-tag tag-core">Implementação</span>
+          <h3>Consultoria</h3>
+          <p>Redesenho completo de processos, estruturas e formas de trabalho, com inteligência artificial integrada de forma sistêmica ao dia a dia da empresa.</p>
+          <ul>
+            <li>Projeto sob medida, não pacote fechado</li>
+            <li>Acompanhamento próximo do time da mesalab</li>
+            <li>Foco em resultado que se sustenta no tempo</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="servicos-cta">
+        <a href="#contato" class="btn btn-primary">Quero um diagnóstico</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PARCEIROS
+       ============================================================ -->
+  <section class="section section-alt" id="parceiros">
+    <div class="wrap reveal">
+      <div class="eyebrow">rede</div>
+      <div class="parceiros-intro">
+        <h2 style="font-size:clamp(26px,3vw,34px); margin-bottom:16px;">Uma mesa não se senta sozinha.</h2>
+        <p>A mesalab seleciona e responde pela qualidade de cada entrega, trabalhando com uma rede curada de especialistas em inteligência artificial para atender cada demanda com o time certo. O cliente fala com a mesalab — a mesalab garante o padrão.</p>
+      </div>
+      <!-- Placeholder: substituir por logos reais de parceiros quando formalizados publicamente -->
+      <div class="parceiros-grid">
+        <div class="parceiro-slot">Parceiro</div>
+        <div class="parceiro-slot">Parceiro</div>
+        <div class="parceiro-slot">Parceiro</div>
+        <div class="parceiro-slot">Parceiro</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TIME
+       ============================================================ -->
+  <section class="section" id="time">
+    <div class="wrap reveal">
+      <div class="eyebrow">quem senta à mesa</div>
+      <div class="time-card">
+        <div class="time-photo"><img src="IMG_4334.jpg" alt="Daniel Andrade"></div>
+        <div class="time-info">
+          <span class="time-role">Fundador da mesalab</span>
+          <h3>Daniel Andrade</h3>
+          <p>Especialista em Strategic AI e profissional de Marketing com mais de 20 anos de experiência em empresas de diversos setores, tamanhos e mercados. Sua trajetória une visão estratégica de negócios e domínio de tecnologia aplicada, com foco em transformar inteligência artificial em resultado real e sustentável para organizações e para as pessoas dentro delas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTATO
+       ============================================================ -->
+  <section class="section section-alt" id="contato">
+    <div class="wrap reveal">
+      <div class="contato-grid">
+        <div class="contato-info">
+          <div class="eyebrow">vamos conversar</div>
+          <h2>Toda grande mudança começa em uma conversa.</h2>
+          <p class="lead">Conte um pouco sobre sua empresa e o que você quer resolver. Vamos entender se — e como — a mesalab pode ajudar.</p>
+
+          <div class="contato-detail">
+            <div><span class="label">E-mail</span><a href="mailto:contato@mesalab.com.br">contato@mesalab.com.br</a></div>
+            <div><span class="label">WhatsApp</span><a href="https://wa.me/5511955799633" target="_blank" rel="noopener">(11) 95579-9633</a></div>
+            <div><span class="label">LinkedIn</span>            <a href="https://linkedin.com/company/mesalab" target="_blank" rel="noopener">linkedin.com/company/mesalab</a></div>
+          </div>
+        </div>
+
+        <form id="leadForm" action="https://formspree.io/f/SEU_FORM_ID" method="POST">
+          <div class="form-row">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" required>
+          </div>
+          <div class="form-row">
+            <label for="empresa">Empresa</label>
+            <input type="text" id="empresa" name="empresa" required>
+          </div>
+          <div class="form-row">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-row">
+            <label for="telefone">Telefone</label>
+            <input type="tel" id="telefone" name="telefone">
+          </div>
+          <div class="form-row">
+            <label for="mensagem">Como podemos ajudar?</label>
+            <textarea id="mensagem" name="mensagem" rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Agendar conversa</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <a href="#top" class="logo"><img src="LOGO_PARA-FUNDO_AZUL.png" alt="mesalab"></a>
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#metodo">Como trabalhamos</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#parceiros">Parceiros</a></li>
+        <li><a href="#time">Time</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 mesalab. Todos os direitos reservados.</span>
+      <div class="footer-social">
+        <a href="https://linkedin.com/company/mesalab" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header shadow on scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 8);
+  });
+
+  // Mobile drawer
+  const navToggle = document.getElementById('navToggle');
+  const closeDrawer = document.getElementById('closeDrawer');
+  const drawer = document.getElementById('mobileDrawer');
+  navToggle?.addEventListener('click', () => drawer.classList.add('open'));
+  closeDrawer?.addEventListener('click', () => drawer.classList.remove('open'));
+  drawer?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => drawer.classList.remove('open')));
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('is-visible'));
+  }
+
+  // Lead form (placeholder — substituir por integração real: endpoint, Formspree, etc.)
+  const leadForm = document.getElementById('leadForm');
+  leadForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Obrigado! Sua mensagem foi enviada. Entraremos em contato em breve.');
+  });
+</script>
+
+</body>
+</html>

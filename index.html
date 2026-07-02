@@ -326,7 +326,7 @@
   }
 
   /* ============================================================
-     SERVIÇOS — funil Vetor -> Consultoria
+     SERVIÇOS — funil Diagnóstico -> Execução
      ============================================================ */
   .servicos-flow{
     display:grid;
@@ -420,19 +420,18 @@
     width: 100%;
     aspect-ratio: 1/1;
     border-radius: 50%;
-    background: var(--bg-alt);
     border: 2px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    text-align:center;
-    padding: 10px;
-    overflow:hidden;
+    overflow: hidden;
+    background: var(--bg-alt);
+    flex-shrink: 0;
   }
-  .time-photo img{ width:100%; height:100%; object-fit:cover; }
+  .time-photo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    display: block;
+  }
   .time-info .eyebrow{ margin-bottom: 10px; }
   .time-info h3{ font-size: 24px; margin-bottom: 4px; }
   .time-role{
@@ -549,7 +548,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.85) saturate(0.9);
+    filter: brightness(0.9) saturate(0.35) sepia(0.25) hue-rotate(175deg) contrast(1.05);
   }
   .tech-banner::after{
     content: "";
@@ -777,7 +776,7 @@
       <div class="servicos-flow">
         <div class="servico-card">
           <span class="servico-tag tag-entrada">Ponto de entrada</span>
-          <h3>Vetor</h3>
+          <h3>Diagnóstico</h3>
           <p>Um diagnóstico objetivo que mapeia oportunidades reais de aplicação de inteligência artificial na estrutura da sua empresa — sem compromisso de continuidade.</p>
           <ul>
             <li>Entrega concreta e independente</li>
@@ -790,7 +789,7 @@
 
         <div class="servico-card">
           <span class="servico-tag tag-core">Implementação</span>
-          <h3>Consultoria</h3>
+          <h3>Execução</h3>
           <p>Redesenho completo de processos, estruturas e formas de trabalho, com inteligência artificial integrada de forma sistêmica ao dia a dia da empresa.</p>
           <ul>
             <li>Projeto sob medida, não pacote fechado</li>
